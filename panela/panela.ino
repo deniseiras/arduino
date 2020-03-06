@@ -58,7 +58,6 @@ D12 - amarelo
 
 
 // system parameters
-#define tempOffset 1             // graus para cima/baixo de offset
 float tempOffsetOn = -1;
 float tempOffsetOff = -0.5;
 float resistance_power_max = 1.0;  // porcentagem da potencia maxima da resistencia via relé de estado sólido
