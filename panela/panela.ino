@@ -58,8 +58,9 @@ D12 - amarelo
 
 
 // system parameters
-float tempOffsetOn = -1;
+float tempOffsetOn = -0.5;
 float tempOffsetOff = -0.5;
+float tempOffsetSensor = 2.0;     // Temperatura Lida - Real
 float resistance_power_max = 1.0;  // porcentagem da potencia maxima da resistencia via relé de estado sólido
 bool backHigh = true;
 
@@ -218,7 +219,9 @@ void loop() {
           if (getOk()) {
             rampNow ++;
           } else {
-            rampNow --;
+            if (rampNow > 0) {
+              rampNow --;
+            }
           }
           continue;
         }
@@ -353,6 +356,7 @@ void loop() {
     programPhase = "*";
   
   } else if ( programPhase == "Config. Offsets") {
+    tempOffsetSensor = getValue("Temp Diff Sensor", "C", tempOffsetSensor, 0.1, -10, +10);
     tempOffsetOn = getValue("Temp Offset on", "C", tempOffsetOn, 0.1, -10, +10);
     tempOffsetOff = getValue("Temp Offset off", "C", tempOffsetOff, 0.1, -10, +10);
     programPhase = "*";
@@ -568,7 +572,9 @@ float readTemp() {
   // real
   sensors.requestTemperatures();
   float tempC = sensors.getTempC(sensor1);
-  return tempC;
+
+  // corrigida
+  return tempC + tempOffsetSensor;
 }
 
 
